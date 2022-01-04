@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbc.mapper.ReserveMeetingMapper">
+    <select id="getMeetingByParticipate" resultType="com.xbc.pojo.ReserveMeeting">
+    select *from meeting where numberofparticipants = #{employeeId} and status=0
+    </select>
+
+    <select id="getMeetingRoomDetails" resultType="com.xbc.pojo.ReserveMeeting">
+        select *from meeting where meetingid=#{meetingId}
+    </select>
+
+    <select id="getAllReserveMeeting" resultType="com.xbc.vo.ReserveMeetingVo">
+        select mr.roomname as roomName, mr.roomid as meetingRoomId,
+               me.meetingid as meetingId,me.meetingname as meetingName,
+               em.employeename as reservationistName,me.starttime as startTime,
+               me.endtime as endTime,me.reservationtime
+        from meeting me, meetingroom mr, employee em
+        where me.roomid=mr.roomid
+          and em.employeeid=me.reservationistid
+          <if test="que.meetingName!=null and que.meetingName!=''">
+              and me.meetingname like '%'+ #{que.meetingName}+'%'
+          </if>
+          <if test="que.roomName!=null and que.roomName!='' ">
+              and mr.roomname like '%'+ #{que.roomName}+'%'
+          </if>
+          <if test="que.reservationName!=null and que.reservationName!=''">
+              and em.employeename like '%'+#{que.reservationName}+'%'
+          </if>
+        <if test="que.page!=null ">
+          limit #{que.page},#{que.pageSize}
+        </if>
+    </select>
+
+    <select id="geTotal" resultType="int">
+        select count(*) as num
+        from meeting me, meetingroom mr,
+             employee em
+        where me.roomid=mr.roomid and em.employeeid=me.reservationistid
+    </select>
+
+<!--  根据会议id查出参加会议的人员  -->
+    <select id="getParticipateByMeetingId" resultType="com.xbc.pojo.Employee">
+        select ee.employeename as employeeName
+            ,ee.phone as phone
+            ,ee.email as email
+        from meetingparticipants mp
+        left join employee ee on ee.employeeid=mp.employeeid
+        where mp.meetingid=#{meetingId}
+        and ee.employeename is not null
+    </select>
+</mapper>

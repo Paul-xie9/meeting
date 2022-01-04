@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbc.mapper.EmployeeMapper">
+    <select id="login" resultType="com.xbc.pojo.Employee">
+        select *
+        from employee
+        where username = #{username}
+    </select>
+    <insert id="register">
+        insert into employee(employeename, username, password, phone, email, departmentid) value (#{employeeName},#{username},#{password},#{phone},#{email},#{departmentId})
+    </insert>
+
+    <select id="getAllEmpsByStatus" resultType="com.xbc.pojo.Employee">
+        select *
+        from employee
+        where status = 0
+    </select>
+
+    <update id="updatestatus">
+        update employee
+        set status=#{status}
+        where employeeid = #{employeeId}
+    </update>
+
+    <select id="getEmployeeByStatus" resultType="com.xbc.pojo.Employee">
+        select *
+        from employee
+        where status = #{status}
+    </select>
+
+    <select id="getTotal" resultType="long">
+        select count(*)
+        from employee where 1=1
+        <if test="emp.status!=null">
+            and status=#{emp.status}
+        </if>
+        <if test="emp.employeeName!=null">
+            and employeename like concat('%',#{emp.employeeName},'%')
+        </if>
+        <if test="emp.userName!=null">
+            and username like concat('%',#{emp.userName},'%')
+        </if>
+    </select>
+
+    <select id="getAllEmps" resultType="com.xbc.pojo.Employee">
+        select *from employee where 1=1
+        <if test="emp.status!=null">
+            and status=#{emp.status}
+        </if>
+        <if test="emp.employeeName!=null">
+            and employeename like concat('%',#{emp.employeeName},'%')
+        </if>
+        <if test="emp.userName!=null">
+            and username like concat('%',#{emp.userName},'%')
+        </if>
+        limit #{page},#{pageSize}
+    </select>
+
+    <select id="getEmpById" resultType="com.xbc.pojo.Employee">
+        select *from employee where employeeid=#{employeeid}
+    </select>
+
+    <update id="updatePassword">
+        update employee set password=#{newpassword} where employeeid=#{employeeid}
+    </update>
+</mapper>

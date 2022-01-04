@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbc.mapper.DepartmentMapper">
+    <!--  根据id查出单位  -->
+    <select id="getDepById" resultType="com.xbc.pojo.Department">
+        select *
+        from department
+        where departmentid =#{id}
+    </select>
+
+    <select id="getAllDeps" resultType="com.xbc.pojo.Department">
+        select *from department
+    </select>
+
+    <insert id="addDepartment">
+        insert into department(departmentname) values (#{departmentname})
+    </insert>
+
+    <delete id="deleteDepartment">
+        delete from department where departmentid=#{departmentid}
+    </delete>
+
+    <select id="getDepartmentByName" resultType="com.xbc.pojo.Department">
+        select departmentname from department where departmentname=#{departmentname}
+    </select>
+
+    <update id="updateDepartment">
+        update department set departmentname=#{val} where departmentid=#{depid}
+    </update>
+</mapper>

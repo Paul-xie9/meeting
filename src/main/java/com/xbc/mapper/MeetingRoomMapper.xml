@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbc.mapper.MeetingRoomMapper">
+    <resultMap id="BaseMap" type="com.xbc.pojo.MeetingRoom">
+        <id column="roomId" property="roomId"/>
+        <result column="roomNum" property="roomNum"/>
+        <result column="roomName" property="roomName"/>
+        <result column="capacity" property="capacity"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    <select id="getAllMeetingRoom" resultMap="BaseMap">
+    select *from meetingroom
+    </select>
+    <select id="getMeetingRoomById" resultMap="BaseMap">
+        select *from meetingroom where roomid=#{roomId}
+    </select>
+
+    <update id="updateRoom">
+        update meetingroom
+        set roomNum=#{mr.roomNum},roomName=#{mr.roomName},capacity=#{mr.capacity},
+            status=#{mr.status},description=#{mr.description}
+        where roomId=#{mr.roomId}
+    </update>
+
+    <insert id="AddMeetingRoom">
+        insert into meetingroom(roomNum,roomName,capacity,status,description)
+         value (#{mr.roomNum},#{mr.roomName},#{mr.capacity},#{mr.status},#{mr.description})
+    </insert>
+</mapper>
