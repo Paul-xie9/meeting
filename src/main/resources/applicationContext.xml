@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--  spring的配置文件  -->
+    <context:component-scan base-package="com.xbc" use-default-filters="true">
+        <!--    除了controller其他都扫描    -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--================================Mybatis配置=====================================-->
+    <!--  配置数据库连接信息  -->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="url" value="${db.url}"/>
+    </bean>
+
+    <!--  配sqlSessionFactory  -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+        <!--    绑定数据源    -->
+        <property name="dataSource" ref="dataSource"/>
+        <!--     绑定实体类   -->
+        <property name="typeAliasesPackage" value="com.xbc.pojo"/>
+        <!--    绑定mapper文件位置    -->
+        <property name="mapperLocations">
+            <value>
+                classpath*:com/xbc/mapper/*.xml
+            </value>
+        </property>
+    </bean>
+    <!--mapper文件绑定-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+        <property name="basePackage" value="com.xbc.mapper"/>
+    </bean>
+
+    <!--  ==================================事务配置=======================================  -->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="dataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            <tx:method name="add*"/>
+            <tx:method name="update*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="insert*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--  利用aop切入到对应的切面  -->
+    <aop:config>
+        <aop:pointcut id="pc1" expression="execution(* com.xbc.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc1"/>
+    </aop:config>
+</beans>
