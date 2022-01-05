@@ -28,8 +28,8 @@ public class EmployeeService {
         return i;
     }
 
-    public List<Employee> getAllEmpsByStatus() {
-        return employeeMapper.getAllEmpsByStatus();
+    public List<Employee> getAllEmpsByStatus(Integer status) {
+        return employeeMapper.getAllEmpsByStatus(status);
     }
 
     public List<Employee> getAllEmps(Employee employee,Integer page,Integer pageSize) {

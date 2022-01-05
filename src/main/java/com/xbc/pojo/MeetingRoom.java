@@ -11,6 +11,9 @@ public class MeetingRoom {
     private Integer status;//状态（0可用 1被占用）
     private String description;
 
+    public MeetingRoom() {
+    }
+
     @Override
     public String toString() {
         return "MeetingRoom{" +

@@ -16,10 +16,20 @@ public class CommonQuery {
     private String roomName;
     @ApiModelProperty(value = "预定者的名字")
     private String reservationName;
+    @ApiModelProperty(value = "预定者的id")
+    private Integer reservationId;
     @ApiModelProperty(value = "页")
     private int page=1;
     @ApiModelProperty(value = "单页大小")
     private int pageSize = 10;
+
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
 
     public String getMeetingName() {
         return meetingName;

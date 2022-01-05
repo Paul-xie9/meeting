@@ -32,13 +32,13 @@
             <#if mlist??>
                 <#list mlist as m >
                     <tr>
-                        <td>${m.meetingname}</td>
-                        <td>${m.roomname}</td>
-                        <td>${m.starttime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${m.endtime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${m.reservationtime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${m.meetingName}</td>
+                        <td>${m.roomName}</td>
+                        <td>${m.startTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${m.endTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${m.reservationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>
-                            <a class="clickbutton" href="/mymeetingdetails?meetingid=${m.meetingid}">查看/撤销</a>
+                            <a class="clickbutton" href="/mymeetingdetails?meetingid=${m.meetingId}">查看/撤销</a>
                         </td>
                     </tr>
                 </#list>

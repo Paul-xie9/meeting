@@ -1,11 +1,11 @@
 package com.xbc.controller;
 
-import com.alibaba.druid.stat.TableStat;
 import com.alibaba.druid.util.StringUtils;
 import com.xbc.pojo.Department;
 import com.xbc.pojo.Employee;
 import com.xbc.pojo.MeetingRoom;
 import com.xbc.pojo.ReserveMeeting;
+import com.xbc.query.CommonQuery;
 import com.xbc.service.DepartmentService;
 import com.xbc.service.EmployeeService;
 import com.xbc.service.MeetingRoomService;
@@ -15,10 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("admin/")
@@ -41,7 +40,23 @@ public class AdminController {
      * @return
      */
     @RequestMapping("main")
-    public String main() {
+    public String main(Model model,HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("currentUser");
+        Integer employeeId = employee.getEmployeeId();
+        List<ReserveMeeting> reserveMeetingList = reserveMeetingService.getMeetingByParticipate(employeeId);
+        reserveMeetingList.forEach(l->{
+            System.out.println("l.getMeetingName() = " + l.getMeetingName());
+        });
+
+        List<ReserveMeeting> reserveMeetings= reserveMeetingList.stream()
+                .filter(reserveMeeting -> reserveMeeting.getStatus()==0)
+                .collect(Collectors.toList());//未取消的会议
+        List<ReserveMeeting> cancelMeetings=reserveMeetingList.stream()
+                .filter(re->re.getStatus()==1)
+                .collect(Collectors.toList());//取消的会议
+
+        model.addAttribute("ms", reserveMeetings);
+        model.addAttribute("cms", cancelMeetings);
         return "notifications";
     }
 
@@ -53,7 +68,8 @@ public class AdminController {
      */
     @RequestMapping("to_approveaccount")
     public String approveAccount(Model model) {
-        List<Employee> employeeList = employeeService.getAllEmpsByStatus();
+        int status=0;
+        List<Employee> employeeList = employeeService.getAllEmpsByStatus(status);
         model.addAttribute("emps", employeeList);
         return "approveaccount";
     }
@@ -148,7 +164,7 @@ public class AdminController {
      *
      * @return
      */
-    @RequestMapping("to_searchemployees")
+    @RequestMapping({"to_searchemployees","selectAllEmps"})
     public String toSearchemployees(Employee employee, @RequestParam(defaultValue = "1") Integer page, Model model) {
         List<Employee> employeeList = employeeService.getAllEmps(employee, page, PAGE_SIZE);
         Long total = employeeService.getTotal(employee, page, PAGE_SIZE);
@@ -268,7 +284,16 @@ public class AdminController {
         Employee employee = (Employee) session.getAttribute("currentUser");
         Integer employeeId = employee.getEmployeeId();
         List<ReserveMeeting> reserveMeetingList = reserveMeetingService.getMeetingByParticipate(employeeId);
-        model.addAttribute("ms", reserveMeetingList);
+
+        List<ReserveMeeting> reserveMeetings= reserveMeetingList.stream()
+                .filter(reserveMeeting -> reserveMeeting.getStatus()==0)
+                .collect(Collectors.toList());//未取消的会议
+        List<ReserveMeeting> cancelMeetings=reserveMeetingList.stream()
+                .filter(re->re.getStatus()==1)
+                .collect(Collectors.toList());//取消的会议
+
+        model.addAttribute("ms", reserveMeetings);
+        model.addAttribute("cms", cancelMeetings);
         return "notifications";
     }
 
@@ -277,9 +302,14 @@ public class AdminController {
      *
      * @return
      */
-    @RequestMapping("to_mybookings")
-    public String toMybookings() {
-        return "mybookings";
+    @RequestMapping("to_myOrders")
+    public String toMybookings(Model model,HttpSession session ,CommonQuery query) {
+        Employee currentUser = this.getCurrentUser(session);
+        query.setReservationId(currentUser.getEmployeeId());
+        List<ReserveMeeting> allReserveMeeting = reserveMeetingService.getAllReserveMeeting(query);
+
+        model.addAttribute("mlist",allReserveMeeting);
+        return "myOders";
     }
 
     @RequestMapping("to_meetingdetails")
@@ -291,12 +321,30 @@ public class AdminController {
     }
 
     /**
-     * 暂时不做
+     * 预定会议
      * @return
      */
-    @RequestMapping("searchemployees")
-    public String queryMeetings(){
+    @RequestMapping("to_ordermeeting")
+    public String toOrderMeeting(Model model,CommonQuery query){
+        List<MeetingRoom> meetingRoomList =reserveMeetingService.getAllRoom(query);
+        List<Employee> emps = employeeService.getAllEmpsByStatus(null);
+        model.addAttribute("emps",emps);
+        model.addAttribute("mrs",meetingRoomList);
+        return "ordermeeting";
+    }
 
-        return "redirect:to_searchemployees";
+    @PostMapping("orderMeeting")
+    public String orderMeeting(ReserveMeeting reserveMeeting,Model model){
+
+        return "forward:/admin/to_myOrders";
+    }
+
+    /**
+     * 获取当前登录的用户信息
+     * @param session
+     * @return
+     */
+    private Employee getCurrentUser(HttpSession session){
+        return (Employee) session.getAttribute("currentUser");
     }
 }

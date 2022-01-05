@@ -15,7 +15,7 @@ public interface EmployeeMapper {
                  @Param("phone")String phone,@Param("email") String email,
                  @Param("departmentId") String departmentId);
 
-    List<Employee> getAllEmpsByStatus();
+    List<Employee> getAllEmpsByStatus(@Param("status") Integer status);
 
     List<Employee> getAllEmps(@Param("emp") Employee employee, @Param("page") Integer page, @Param("pageSize") Integer pageSize);
 

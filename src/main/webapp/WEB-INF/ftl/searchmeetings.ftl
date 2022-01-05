@@ -106,7 +106,7 @@
                         <td>${m.startTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>${m.endTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>${m.reservationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${m.reservationistName}</td>
+                        <td>${m.employeeName}</td>
                         <td>
                             <a class="clickbutton" href="/to_meetingdetails?meetingId=${m.meetingId}">查看详情</a>
                         </td>

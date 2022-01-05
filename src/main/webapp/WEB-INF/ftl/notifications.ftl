@@ -30,12 +30,12 @@
             <#if ms??>
                 <#list ms as m>
                     <tr>
-                        <td>${m.meetingNameame}</td>
+                        <td>${m.meetingName}</td>
                         <td>${m.roomName}</td>
                         <td>${m.startTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>${m.endTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>
-                            <a class="clickbutton" href="/meetingdetails?meetingid=${m.meetingRoomId}">查看详情</a>
+                            <a class="clickbutton" href="/to_meetingdetails?meetingId=${m.meetingRoomId}">查看详情</a>
                         </td>
                     </tr>
                 </#list>
@@ -58,13 +58,13 @@
             <#if cms??>
                 <#list cms as cm>
                     <tr>
-                        <td>${cm.meetingname}</td>
-                        <td>${cm.roomname}</td>
-                        <td>${cm.starttime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${cm.endtime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${cm.canceledreason!"没理由"}</td>
+                        <td>${cm.meetingName}</td>
+                        <td>${cm.roomName}</td>
+                        <td>${cm.startTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${cm.endTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${cm.canceledReason!"没理由"}</td>
                         <td>
-                            <a class="clickbutton" href="/meetingdetails?meetingid=${cm.meetingid}">查看详情</a>
+                            <a class="clickbutton" href="/to_meetingdetails?meetingId=${cm.meetingId}">查看详情</a>
                         </td>
                     </tr>
                 </#list>

@@ -1,5 +1,7 @@
 package com.xbc.pojo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 /**
@@ -18,6 +20,26 @@ public class ReserveMeeting {
     private String description;
     private Integer status;//状态（0没取消的会议 1取消的会议）
     private String canceledReason;
+    @ApiModelProperty(value = "用户名")
+    private String employeeName;
+    @ApiModelProperty(value = "会议室")
+    private String roomName;
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     public Integer getMeetingId() {
         return meetingId;

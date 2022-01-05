@@ -2,6 +2,7 @@ package com.xbc.service;
 
 import com.xbc.mapper.ReserveMeetingMapper;
 import com.xbc.pojo.Employee;
+import com.xbc.pojo.MeetingRoom;
 import com.xbc.pojo.ReserveMeeting;
 import com.xbc.query.CommonQuery;
 import com.xbc.vo.ReserveMeetingVo;
@@ -19,7 +20,7 @@ public class ReserveMeetingService {
         return reserveMeetingMapper.getMeetingByParticipate(employeeId);
     }
 
-    public List<ReserveMeetingVo> getAllReserveMeeting(CommonQuery query) {
+    public List<ReserveMeeting> getAllReserveMeeting(CommonQuery query) {
         return reserveMeetingMapper.getAllReserveMeeting(query);
     }
 
@@ -33,5 +34,9 @@ public class ReserveMeetingService {
 
     public List<Employee> getParticipateByMeetingId(Integer meetingId) {
         return reserveMeetingMapper.getParticipateByMeetingId(meetingId);
+    }
+
+    public List<MeetingRoom> getAllRoom(CommonQuery query) {
+        return reserveMeetingMapper.getAllRoom(query);
     }
 }

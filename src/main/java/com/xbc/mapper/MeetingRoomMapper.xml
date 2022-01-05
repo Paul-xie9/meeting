@@ -3,19 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xbc.mapper.MeetingRoomMapper">
-    <resultMap id="BaseMap" type="com.xbc.pojo.MeetingRoom">
-        <id column="roomId" property="roomId"/>
-        <result column="roomNum" property="roomNum"/>
-        <result column="roomName" property="roomName"/>
-        <result column="capacity" property="capacity"/>
-        <result column="status" property="status"/>
-        <result column="description" property="description"/>
-    </resultMap>
-    <select id="getAllMeetingRoom" resultMap="BaseMap">
-    select *from meetingroom
+
+    <select id="getAllMeetingRoom" resultType="com.xbc.pojo.MeetingRoom">
+    select
+        roomid as roomId
+         ,roomnum as roomNum
+        ,roomname as roomName
+        ,capacity as capacity
+        ,status as status
+        ,description as description
+    from meetingroom
     </select>
-    <select id="getMeetingRoomById" resultMap="BaseMap">
-        select *from meetingroom where roomid=#{roomId}
+    <select id="getMeetingRoomById" resultType="com.xbc.pojo.MeetingRoom">
+        select
+            roomid as roomId
+             ,roomnum as roomNum
+             ,roomname as roomName
+             ,capacity as capacity
+             ,status as status
+             ,description as description
+        from meetingroom where roomid=#{roomId}
     </select>
 
     <update id="updateRoom">

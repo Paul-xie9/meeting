@@ -1,6 +1,7 @@
 package com.xbc.mapper;
 
 import com.xbc.pojo.Employee;
+import com.xbc.pojo.MeetingRoom;
 import com.xbc.pojo.ReserveMeeting;
 import com.xbc.query.CommonQuery;
 import com.xbc.vo.ReserveMeetingVo;
@@ -15,9 +16,11 @@ public interface ReserveMeetingMapper {
 
     ReserveMeeting getMeetingRoomDetails(@Param("meetingId") Integer meetingId);
 
-    List<ReserveMeetingVo> getAllReserveMeeting(@Param("que") CommonQuery query);
+    List<ReserveMeeting> getAllReserveMeeting(@Param("que") CommonQuery query);
 
     Integer geTotal();
 
     List<Employee> getParticipateByMeetingId(@Param("meetingId")Integer meetingId);
+
+    List<MeetingRoom> getAllRoom(@Param("que")CommonQuery query);
 }

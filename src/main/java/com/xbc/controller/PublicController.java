@@ -172,7 +172,7 @@ public class PublicController {
     public String toSearchMeetings(Model model,CommonQuery query) {
         int i = (query.getPage()-1) * query.getPageSize();
         query.setPage(i);
-        List<ReserveMeetingVo> reserveMeetingList = reserveMeetingService.getAllReserveMeeting(query);
+        List<ReserveMeeting> reserveMeetingList = reserveMeetingService.getAllReserveMeeting(query);
         Integer total = reserveMeetingService.geTotal();
         model.addAttribute("total",total);//总的数据条数
         model.addAttribute("page",1);
@@ -192,9 +192,14 @@ public class PublicController {
      */
     @RequestMapping("to_meetingdetails")
     public String toMeetingDetail(Integer meetingId,Model model){
+        System.out.println("meetingId = " + meetingId);
         ReserveMeeting meetingRoomDetails = reserveMeetingService.getMeetingRoomDetails(meetingId);
         model.addAttribute("meeting",meetingRoomDetails);
+        System.out.println("meetingRoomDetails.getMeetingName() = " + meetingRoomDetails.getMeetingName());
         List<Employee> employees = reserveMeetingService.getParticipateByMeetingId(meetingId);
+        employees.forEach(e->{
+            System.out.println("e.getEmployeeName() = " + e.getEmployeeName());
+        });
         model.addAttribute("ems",employees);
         return "meetingdetails";
     }

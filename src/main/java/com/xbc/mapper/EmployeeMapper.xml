@@ -13,9 +13,21 @@
     </insert>
 
     <select id="getAllEmpsByStatus" resultType="com.xbc.pojo.Employee">
-        select *
+        select
+         employeeId as employeeId
+        ,employeeName as employeeName
+        ,userName as userName
+        ,password as password
+        ,phone as phone
+        ,email as email
+        , status as status
+        , departmentId as departmentId
+        , role as role
         from employee
-        where status = 0
+        where 1=1
+              <if test="status!=null">
+              and status =#{status}
+              </if>
     </select>
 
     <update id="updatestatus">

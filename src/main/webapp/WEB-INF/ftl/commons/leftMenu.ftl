@@ -1,11 +1,13 @@
 <div class="page-sidebar">
+    <#if currentUser?? && (currentUser.role >0)>
     <div class="sidebar-menugroup">
         <div class="sidebar-grouptitle">个人中心</div>
         <ul class="sidebar-menu">
-            <li class="sidebar-menuitem"><a href="/admin/to_notifications">最新通知</a></li>
-            <li class="sidebar-menuitem active"><a href="/admin/to_mybookings">我的预定</a></li>
+                <li class="sidebar-menuitem"><a href="/admin/to_notifications">最新通知</a></li>
+                <li class="sidebar-menuitem active"><a href="/admin/to_myOrders">我的预定</a></li>
         </ul>
     </div>
+    </#if>
     <div class="sidebar-menugroup">
         <div class="sidebar-grouptitle">人员管理</div>
         <ul class="sidebar-menu">
@@ -24,7 +26,7 @@
                 <li class="sidebar-menuitem"><a href="/admin/to_addmeetingroom">添加会议室</a></li>
             </#if>
             <#if currentUser?? &&(currentUser.role>0) >
-                <li class="sidebar-menuitem"><a href="/bookmeeting">预定会议</a></li>
+                <li class="sidebar-menuitem"><a href="/admin/to_ordermeeting">预定会议</a></li>
             </#if>
             <li class="sidebar-menuitem"><a href="/to_meetingrooms">查看会议室</a></li>
             <li class="sidebar-menuitem"><a href="/to_searchmeetings">搜索会议</a></li>
