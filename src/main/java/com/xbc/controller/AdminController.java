@@ -312,14 +312,6 @@ public class AdminController {
         return "myOders";
     }
 
-    @RequestMapping("to_meetingdetails")
-    public String getMeetingDetails(Integer meetingid,Model model){
-//        MeetingRoom meetingRoomDetails = meetingRoomService.getMeetingRoomDetails(meetingid);
-        model.addAttribute("meeting",null);
-        model.addAttribute("ems",null);
-        return "meetingdetails";
-    }
-
     /**
      * 预定会议
      * @return
